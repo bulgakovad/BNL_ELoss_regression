@@ -1,0 +1,14 @@
+# Large datasets
+*.root
+*.parquet
+parquet/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Python temporary files
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
