@@ -1,0 +1,149 @@
+{
+  "format_version": 1,
+  "created_utc": "2026-10-27T15:14:42.922613+00:00",
+  "features": [
+    "p_rec",
+    "theta_rec",
+    "phi_rec"
+  ],
+  "target": "delta_p = p_gen - p_rec",
+  "correction": "p_corrected = p_rec + predicted_delta_p",
+  "versions": {
+    "python": "3.11.15",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.0",
+    "sklearn": "1.9.0"
+  },
+  "training_root": "/Users/aleksandr.bulgakov/Desktop/work/BNL_ELoss_regression/phase_space_events_TRAIN.root",
+  "root_branch_types": {
+    "event": "int64_t",
+    "file_id": "int32_t",
+    "triggered": "int32_t",
+    "trigger_recrow": "int32_t",
+    "trigger_pid_rec": "int32_t",
+    "is_trigger_particle": "int32_t",
+    "mcrow": "int32_t",
+    "recrow": "int32_t",
+    "reconstructed": "int32_t",
+    "pid_gen": "int32_t",
+    "pid_rec": "int32_t",
+    "charge_gen": "int32_t",
+    "charge_rec": "int32_t",
+    "status_rec": "int32_t",
+    "detector": "int32_t",
+    "genmatch_quality": "float",
+    "recmatch_quality": "float",
+    "px_gen": "float",
+    "py_gen": "float",
+    "pz_gen": "float",
+    "p_gen": "float",
+    "theta_gen": "float",
+    "phi_gen": "float",
+    "px_rec": "float",
+    "py_rec": "float",
+    "pz_rec": "float",
+    "p_rec": "float",
+    "theta_rec": "float",
+    "phi_rec": "float",
+    "vx_gen": "float",
+    "vy_gen": "float",
+    "vz_gen": "float",
+    "vx_rec": "float",
+    "vy_rec": "float",
+    "vz_rec": "float",
+    "beta_rec": "float",
+    "chi2pid_rec": "float",
+    "delta_p": "float",
+    "delta_theta": "float",
+    "delta_phi": "float"
+  },
+  "training_selection": {
+    "event": "No event-level trigger requirement (all events)",
+    "row_filter": "(((((reconstructed == 1) and ((vz_rec > -5.5) and (vz_rec < 0.5))) and ((pid_gen != 11) or (p_rec > 2))) and (detector == 1)) and ((delta_p < 0.15) and (delta_p > -0.15)))",
+    "pid_source": "pid_gen"
+  },
+  "models": {
+    "electron": {
+      "pid_gen": 11,
+      "file": "electron.ubj",
+      "sha256": "68cff7a42d47c635c17fbdd15031cf44df1cd36a3fe70d5cda90983a9fd76de3",
+      "training_rows": 1493194,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 2.0000030994415283,
+          "max": 10.537005424499512
+        },
+        "theta_rec": {
+          "min": 4.017695426940918,
+          "max": 36.37337112426758
+        },
+        "phi_rec": {
+          "min": -179.99981689453125,
+          "max": 179.9999237060547
+        }
+      }
+    },
+    "proton": {
+      "pid_gen": 2212,
+      "file": "proton.ubj",
+      "sha256": "caf64d0697a99164b6b7b9571ae6934b480f9d613303293cb779dee08d780a74",
+      "training_rows": 900408,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 0.35356342792510986,
+          "max": 7.002598762512207
+        },
+        "theta_rec": {
+          "min": 2.775160312652588,
+          "max": 63.18744659423828
+        },
+        "phi_rec": {
+          "min": -179.99998474121094,
+          "max": 179.9995574951172
+        }
+      }
+    },
+    "pi_plus": {
+      "pid_gen": 211,
+      "file": "pi_plus.ubj",
+      "sha256": "7d48c38fe437381f96aa1e53f0c89c2dfb2fd28d7f2d67aba5a8e1f15a736377",
+      "training_rows": 894498,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 0.17268337309360504,
+          "max": 9.100614547729492
+        },
+        "theta_rec": {
+          "min": 1.7385841608047485,
+          "max": 59.3410530090332
+        },
+        "phi_rec": {
+          "min": -179.9994659423828,
+          "max": 179.9999542236328
+        }
+      }
+    },
+    "pi_minus": {
+      "pid_gen": -211,
+      "file": "pi_minus.ubj",
+      "sha256": "fac6002747ea798fe9a4e99e1f2f67e668657ebbc1bb2213951c9fae9282e2bf",
+      "training_rows": 778476,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 0.18595042824745178,
+          "max": 8.996474266052246
+        },
+        "theta_rec": {
+          "min": 1.4147670269012451,
+          "max": 56.72058868408203
+        },
+        "phi_rec": {
+          "min": -179.9997100830078,
+          "max": 179.99993896484375
+        }
+      }
+    }
+  }
+}

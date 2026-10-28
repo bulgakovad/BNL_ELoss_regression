@@ -1,0 +1,149 @@
+{
+  "format_version": 1,
+  "created_utc": "2026-10-26T23:49:17.070267+00:00",
+  "features": [
+    "p_rec",
+    "theta_rec",
+    "phi_rec"
+  ],
+  "target": "delta_p = p_gen - p_rec",
+  "correction": "p_corrected = p_rec + predicted_delta_p",
+  "versions": {
+    "python": "3.11.15",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.0",
+    "sklearn": "1.9.0"
+  },
+  "training_root": "/Users/aleksandr.bulgakov/Desktop/work/BNL_ELoss_regression/phase_space_events_TRAIN.root",
+  "root_branch_types": {
+    "event": "int64_t",
+    "file_id": "int32_t",
+    "triggered": "int32_t",
+    "trigger_recrow": "int32_t",
+    "trigger_pid_rec": "int32_t",
+    "is_trigger_particle": "int32_t",
+    "mcrow": "int32_t",
+    "recrow": "int32_t",
+    "reconstructed": "int32_t",
+    "pid_gen": "int32_t",
+    "pid_rec": "int32_t",
+    "charge_gen": "int32_t",
+    "charge_rec": "int32_t",
+    "status_rec": "int32_t",
+    "detector": "int32_t",
+    "genmatch_quality": "float",
+    "recmatch_quality": "float",
+    "px_gen": "float",
+    "py_gen": "float",
+    "pz_gen": "float",
+    "p_gen": "float",
+    "theta_gen": "float",
+    "phi_gen": "float",
+    "px_rec": "float",
+    "py_rec": "float",
+    "pz_rec": "float",
+    "p_rec": "float",
+    "theta_rec": "float",
+    "phi_rec": "float",
+    "vx_gen": "float",
+    "vy_gen": "float",
+    "vz_gen": "float",
+    "vx_rec": "float",
+    "vy_rec": "float",
+    "vz_rec": "float",
+    "beta_rec": "float",
+    "chi2pid_rec": "float",
+    "delta_p": "float",
+    "delta_theta": "float",
+    "delta_phi": "float"
+  },
+  "training_selection": {
+    "event": "All rows in events with a generated-electron trigger",
+    "row_filter": "(((((is_in(event, {value_set=int64:[\n  1,\n  2,\n  3,\n  4,\n  8,\n  13,\n  16,\n  17,\n  19,\n  21,\n  ...\n  4999979,\n  4999980,\n  4999982,\n  4999987,\n  4999988,\n  4999989,\n  4999992,\n  4999993,\n  4999996,\n  4999999\n], null_matching_behavior=MATCH}) and (reconstructed == 1)) and ((vz_rec > -5.5) and (vz_rec < 0.5))) and ((pid_gen != 11) or (p_rec > 2))) and (detector == 1)) and ((delta_p < 0.15) and (delta_p > -0.15)))",
+    "pid_source": "pid_gen"
+  },
+  "models": {
+    "electron": {
+      "pid_gen": 11,
+      "file": "electron.ubj",
+      "sha256": "3e32fa76b37b4e67b2c0226c9504755fd42eb2fc589ca0602ad37496e0a42246",
+      "training_rows": 1287349,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 2.0000030994415283,
+          "max": 10.542583465576172
+        },
+        "theta_rec": {
+          "min": 6.043529510498047,
+          "max": 36.37337112426758
+        },
+        "phi_rec": {
+          "min": -179.99981689453125,
+          "max": 179.9998779296875
+        }
+      }
+    },
+    "proton": {
+      "pid_gen": 2212,
+      "file": "proton.ubj",
+      "sha256": "48cd060b29b16f39bc7e00d2499cc3896248b14cfc74d80301321e9c101a1dfc",
+      "training_rows": 469501,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 0.35356342792510986,
+          "max": 7.010988235473633
+        },
+        "theta_rec": {
+          "min": 2.928967237472534,
+          "max": 59.243839263916016
+        },
+        "phi_rec": {
+          "min": -179.99998474121094,
+          "max": 179.9995574951172
+        }
+      }
+    },
+    "pi_plus": {
+      "pid_gen": 211,
+      "file": "pi_plus.ubj",
+      "sha256": "5ce66731e26a93e749f83b8f5005119fd6b1ec7dbfda16d046beaaf0922896ba",
+      "training_rows": 455706,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 0.3267739713191986,
+          "max": 9.007256507873535
+        },
+        "theta_rec": {
+          "min": 1.6042485237121582,
+          "max": 59.3410530090332
+        },
+        "phi_rec": {
+          "min": -179.99867248535156,
+          "max": 179.9999542236328
+        }
+      }
+    },
+    "pi_minus": {
+      "pid_gen": -211,
+      "file": "pi_minus.ubj",
+      "sha256": "c6cb45b856087436befd8ab33ca10cfbd30d89c51338c304822faed05f509822",
+      "training_rows": 398167,
+      "training_feature_ranges": {
+        "p_rec": {
+          "min": 0.2042132169008255,
+          "max": 8.996474266052246
+        },
+        "theta_rec": {
+          "min": 1.4147670269012451,
+          "max": 54.360260009765625
+        },
+        "phi_rec": {
+          "min": -179.9997100830078,
+          "max": 179.99871826171875
+        }
+      }
+    }
+  }
+}

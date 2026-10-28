@@ -1,0 +1,95 @@
+XBDT CORRECTED PARQUET — COLUMN DEFINITIONS
+===========================================
+
+Each row corresponds to one generated MC::Particle, including generated particles
+that have no mutually matched reconstructed particle.
+
+
+EVENT / TRIGGER
+---------------
+event               Unique sequential event ID across all processed HIPO files.
+file_id             Zero-based index of the processed HIPO file in the skimmer's file list.
+triggered           1 if ANY REC::Particle in the event has status < 0; otherwise 0.
+trigger_recrow      REC::Particle row index of the FIRST negative-status reconstructed particle;
+                    -1 if none exists.
+trigger_pid_rec     Reconstructed PID of that first negative-status particle;
+                    0 if none exists.
+is_trigger_particle 1 if this generated particle is mutually matched to the selected
+                    trigger_recrow; otherwise 0. A triggered event may have no such
+                    generated particle if the trigger REC row lacks a mutual MC match.
+
+PARTICLE IDENTIFICATION / MATCHING
+----------------------------------
+mcrow               Row index of this generated particle in MC::Particle.
+recrow              Matched row index in REC::Particle; -1 if not mutually matched.
+reconstructed       1 only if MC::GenMatch maps MC_i to REC_j AND MC::RecMatch maps
+                    REC_j back to MC_i; otherwise 0.
+pid_gen             PDG ID from MC::Particle (11 electron, 211 pi+, -211 pi-, 2212 proton).
+pid_rec             PID from matched REC::Particle; 0 if not mutually matched.
+charge_gen          Charge assigned from generated PID: 11/-211 -> -1,
+                    211/2212 -> +1, other PIDs -> 0.
+charge_rec          Charge from matched REC::Particle; 0 if not mutually matched.
+status_rec          Status from matched REC::Particle; 0 if not mutually matched.
+detector            1 = Forward Detector if 2000 <= abs(status_rec) < 4000;
+                    2 = Central Detector if 4000 <= abs(status_rec) < 5000;
+                    0 = other / not mutually reconstructed.
+genmatch_quality    Quality value copied from MC::GenMatch for the generated particle;
+                    NaN when no GenMatch entry is found. No quality threshold is applied.
+recmatch_quality    Quality value copied from MC::RecMatch for the GenMatch candidate
+                    REC row (if its index is valid); NaN otherwise. May be present even
+                    if the association is not mutual. No quality threshold is applied.
+
+GENERATED MOMENTUM
+------------------
+px_gen              Generated x momentum from MC::Particle (GeV/c).
+py_gen              Generated y momentum from MC::Particle (GeV/c).
+pz_gen              Generated z momentum from MC::Particle (GeV/c).
+p_gen               sqrt(px_gen^2 + py_gen^2 + pz_gen^2) (GeV/c).
+theta_gen           acos(pz_gen / p_gen), converted to degrees; NaN if p_gen <= 0.
+phi_gen             atan2(py_gen, px_gen), converted to degrees.
+
+RECONSTRUCTED MOMENTUM
+----------------------
+px_rec              Reconstructed x momentum (GeV/c). Rescaled by XGBoost if corrected.
+py_rec              Reconstructed y momentum (GeV/c). Rescaled by XGBoost if corrected.
+pz_rec              Reconstructed z momentum (GeV/c). Rescaled by XGBoost if corrected.
+p_rec               Reconstructed momentum magnitude (GeV/c). Corrected if applicable.
+theta_rec           Reconstructed polar angle (degrees). Not altered by inference.
+phi_rec             Reconstructed azimuthal angle (degrees). Not altered by inference.
+
+VERTICES
+--------
+vx_gen              Generated x vertex from MC::Particle (cm).
+vy_gen              Generated y vertex from MC::Particle (cm).
+vz_gen              Generated z vertex from MC::Particle (cm).
+vx_rec              Reconstructed x vertex from matched REC::Particle (cm).
+vy_rec              Reconstructed y vertex from matched REC::Particle (cm).
+vz_rec              Reconstructed z vertex from matched REC::Particle (cm).
+
+OTHER RECONSTRUCTED QUANTITIES
+------------------------------
+beta_rec            beta = v/c from matched REC::Particle.
+chi2pid_rec         chi2pid field from matched REC::Particle (PID chi-square-related quantity).
+
+RESIDUALS
+---------
+delta_p             p_gen - p_rec (GeV/c). Recomputed using corrected p_rec if corrected.
+delta_theta         theta_gen - theta_rec (degrees).
+delta_phi           phi_gen - phi_rec, wrapped into [-180, 180) degrees.
+
+XGBOOST INFERENCE FLAG
+----------------------
+was_corrected       1 if a valid XGBoost momentum correction was applied to this row;
+                    0 if no correction was applied.
+
+NOTES
+-----
+* We do not discard generated particles because they lack reconstruction or a trigger.
+* For particles without a mutual MC/REC match: recrow = -1, reconstructed = 0,
+  pid_rec = charge_rec = status_rec = detector = 0, and reconstructed momentum,
+  vertex, beta, chi2pid, and residual values are NaN.
+* Parquet file retains every row. Only px_rec, py_rec, pz_rec, p_rec, and delta_p
+  can change; was_corrected is the additional column.
+* The trigger is NOT necessarily an electron: the skimmer defines it as the
+  first REC::Particle with status < 0, regardless of its PID.
+
